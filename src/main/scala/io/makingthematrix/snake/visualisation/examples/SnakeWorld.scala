@@ -1,6 +1,5 @@
 package io.makingthematrix.snake.visualisation.examples
 
-import com.almasb.fxgl.dsl.FXGL
 import io.makingthematrix.snake.Arguments
 import io.makingthematrix.snake.engine.fields.{Dir2D, Pos2D}
 import io.makingthematrix.snake.engine.{Automaton, GlobalUpdateStrategy, UpdateStrategy}
@@ -8,7 +7,6 @@ import io.makingthematrix.snake.examples.Snake.{Body, Head, Tail, TurnRight, Tur
 import io.makingthematrix.snake.examples.{Snake, SnakeGlobal}
 import io.makingthematrix.snake.visualisation.{UserEvent, World}
 import io.makingthematrix.snake.visualisation.UserEvent.{MoveUp, MoveDown, MoveLeft, MoveRight}
-import javafx.scene.input.KeyCode
 import javafx.scene.paint.Color
 
 final class SnakeWorld(override protected val args: Arguments) extends World[Snake, SnakeGlobal] {
@@ -50,10 +48,10 @@ final class SnakeWorld(override protected val args: Arguments) extends World[Sna
     auto.updateCell(center.move(Dir2D.Left)) { _.copy(cellType = Tail(Dir2D.Right)) }
     auto.updateCell(center.move(Dir2D.Right)) { _.copy(cellType = Head(Dir2D.Right)) }
 
-    FXGL.onKeyUp(KeyCode.UP,    () => onUserEvent ! MoveUp)
+    /*FXGL.onKeyUp(KeyCode.UP,    () => onUserEvent ! MoveUp)
     FXGL.onKeyUp(KeyCode.DOWN,  () => onUserEvent ! MoveDown)
     FXGL.onKeyUp(KeyCode.LEFT,  () => onUserEvent ! MoveLeft)
-    FXGL.onKeyUp(KeyCode.RIGHT, () => onUserEvent ! MoveRight)
+    FXGL.onKeyUp(KeyCode.RIGHT, () => onUserEvent ! MoveRight)*/
   }
 
   override def next(): Boolean =

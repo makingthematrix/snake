@@ -1,6 +1,5 @@
 package io.makingthematrix.snake.visualisation
 
-import com.almasb.fxgl.dsl.FXGL
 import com.wire.signals.ui.UiDispatchQueue.Ui
 import com.wire.signals.{EventStream, Signal, SourceStream}
 import io.makingthematrix.snake.Arguments
@@ -75,7 +74,7 @@ abstract class World[C <: Cell[C], GC <: GlobalCell[C, GC]] extends GameContract
   }
 
   override def init(): Unit = {
-    FXGL.addUINode(canvas)
+    //FXGL.addUINode(canvas)
 
     canvas.setOnMouseDragged { (ev: MouseEvent) =>
       val p = Pos2D(ev.getSceneX.toInt / args.scale, ev.getSceneY.toInt / args.scale)

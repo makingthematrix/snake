@@ -13,18 +13,16 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.release>17</maven.compiler.release>
         <javafx.version>17.0.1</javafx.version>
         <javafx.plugin.version>0.0.6</javafx.plugin.version>
+        <gluonfx.maven.plugin.version>1.0.7</gluonfx.maven.plugin.version>
         <charm.version>6.1.0</charm.version>
         <attach.version>4.0.13</attach.version>
-        <main.class>io.makingthematrix.snake.Main</main.class>
+        <main.class>calculator.Main</main.class>
         <scala.version>2.13.7</scala.version>
         <scala.compat.version>2.13</scala.compat.version>
-        <scala.maven.plugin.version>4.5.3</scala.maven.plugin.version>
-        <fxgl.version>11.17</fxgl.version>
-        <maven.plugin.version>3.8.1</maven.plugin.version>
-        <gluonfx.maven.plugin>1.0.9</gluonfx.maven.plugin>
+        <munit.version>0.7.27</munit.version>
     </properties>
 
     <dependencies>
@@ -41,12 +39,12 @@
         <dependency>
             <groupId>org.scala-lang.modules</groupId>
             <artifactId>scala-parallel-collections_2.13</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.6</version>
+            <version>1.2.7</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -98,10 +96,12 @@
             <artifactId>lifecycle</artifactId>
             <version>${attach.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.scalameta/munit -->
         <dependency>
-            <groupId>com.github.almasb</groupId>
-            <artifactId>fxgl</artifactId>
-            <version>${fxgl.version}</version>
+            <groupId>org.scalameta</groupId>
+            <artifactId>munit_2.13</artifactId>
+            <version>${munit.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -110,7 +110,7 @@
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
-                <version>${scala.maven.plugin.version}</version>
+                <version>4.5.3</version>
                 <executions>
                     <execution>
                         <id>scala-compile</id>
@@ -132,7 +132,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.plugin.version}</version>
+                <version>3.8.1</version>
             </plugin>
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -146,7 +146,7 @@
             <plugin>
                 <groupId>com.gluonhq</groupId>
                 <artifactId>gluonfx-maven-plugin</artifactId>
-                <version>${gluonfx.maven.plugin}</version>
+                <version>${gluonfx.maven.plugin.version}</version>
                 <configuration>
                     <target>${gluonfx.target}</target>
                     <mainClass>${main.class}</mainClass>
@@ -159,38 +159,14 @@
                         <list>lifecycle</list>
                      </attachList>
                     <reflectionList>
-                        <list>com.almasb.fxgl.audio.AudioPlayer</list>
-                        <list>com.almasb.fxgl.core.asset.AssetLoaderService</list>
-                        <list>com.almasb.fxgl.localization.LocalizationService</list>
-                        <list>com.almasb.fxgl.achievement.AchievementService</list>
-                        <list>com.almasb.fxgl.cutscene.CutsceneService</list>
-                        <list>com.almasb.fxgl.minigames.MiniGameService</list>
-                        <list>com.almasb.fxgl.io.FileSystemService</list>
-                        <list>com.almasb.fxgl.net.NetService</list>
-                        <list>com.almasb.fxgl.profile.SaveLoadService</list>
-                        <list>com.almasb.fxgl.notification.NotificationService</list>
-                        <list>com.almasb.fxgl.notification.impl.NotificationServiceProvider</list>
-                        <list>com.almasb.fxgl.scene.SceneService</list>
-                        <list>com.almasb.fxgl.ui.DialogFactoryService</list>
-                        <list>com.almasb.fxgl.ui.DialogService</list>
-                        <list>com.almasb.fxgl.ui.FXGLDialogFactoryServiceProvider</list>
-                        <list>com.almasb.fxgl.ui.FXGLUIFactoryServiceProvider</list>
-                        <list>com.almasb.fxgl.ui.UIFactoryService</list>
-                        <list>com.almasb.fxgl.app.FXGLApplication$GameApplicationService</list>
-                        <list>com.almasb.fxgl.app.services.FXGLAssetLoaderService</list>
-                        <list>com.almasb.fxgl.app.services.FXGLDialogService</list>
-                        <list>com.almasb.fxgl.app.services.IOTaskExecutorService</list>
-                        <list>com.almasb.fxgl.app.services.SystemBundleService</list>
-                        <list>com.almasb.fxgl.app.services.UpdaterService</list>
-                        <list>com.almasb.fxgl.dev.DevService</list>
-                        <list>com.almasb.fxgl.dev.profiling.ProfilerService</list>
-                        <list>com.almasb.fxgl.multiplayer.MultiplayerService</list>
-                        <list>com.almasb.fxgl.app.ReadOnlyGameSettings</list>
-                        <list>com.almasb.fxgl.notification.view.XboxNotificationView</list>
-                        <list>com.almasb.fxgl.particle.Particle</list>
-                        <list>com.almasb.fxgl.core.reflect.ReflectionUtils</list>
                     </reflectionList>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.1</version>
             </plugin>
         </plugins>
     </build>
