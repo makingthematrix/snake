@@ -187,6 +187,8 @@
                         <list>com.almasb.fxgl.multiplayer.MultiplayerService</list>
                         <list>com.almasb.fxgl.app.ReadOnlyGameSettings</list>
                         <list>com.almasb.fxgl.notification.view.XboxNotificationView</list>
+                        <list>com.almasb.fxgl.particle.Particle</list>
+                        <list>com.almasb.fxgl.core.reflect.ReflectionUtils</list>
                     </reflectionList>
                 </configuration>
             </plugin>
