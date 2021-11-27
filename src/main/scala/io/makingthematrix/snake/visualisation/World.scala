@@ -20,20 +20,12 @@ abstract class World[C <: Cell[C], GC <: GlobalCell[C, GC]] extends GameContract
   protected def processUserEvent(event: UserEvent): Unit
 
   override val onUserEvent: SourceStream[UserEvent] = EventStream[UserEvent]()
-  onUserEvent.foreach { event =>
-    processUserEvent(event)
-    event.pos.map(auto.findCell).foreach { cell =>
-      val color = toColor(cell)
-      Future {
-        val graphics = canvas.getGraphicsContext2D
-        graphics.setFill(color)
-        graphics.fillRect(cell.pos.x * args.scale, cell.pos.y * args.scale, args.scale, args.scale)
-      }(Ui)
-    }
-  }
+  onUserEvent.foreach(processUserEvent)
 
   private val drag = Signal(Option.empty[Pos2D])
-  drag.onUpdated.collect { case (Some(prev), _) => UserEvent(prev, UserEventType.LeftClick) }.pipeTo(onUserEvent)
+  drag.onUpdated.collect {
+    case (Some(Some(prev)), Some(next)) => UserEvent(Some(next), UserEventType.Drag(prev))
+  }.pipeTo(onUserEvent)
 
   override val canvas: Canvas = new Canvas().tap { canvas =>
     canvas.setWidth(args.windowSize.toDouble)

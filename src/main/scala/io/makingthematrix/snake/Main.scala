@@ -1,9 +1,9 @@
 package io.makingthematrix.snake
 
 import com.wire.signals.ui.UiDispatchQueue
-import com.wire.signals.Signal
-import io.makingthematrix.snake.visualisation.{GameContract, GameState, UserEvent}
+import com.wire.signals.{CancellableFuture, Signal}
 import io.makingthematrix.snake.visualisation.examples.SnakeWorld
+import io.makingthematrix.snake.visualisation.{GameContract, GameState, UserEvent}
 import javafx.application.{Application, Platform}
 import javafx.scene.Scene
 import javafx.scene.input.{KeyCode, KeyEvent}
@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox
 import javafx.stage.{Stage, WindowEvent}
 
 import scala.jdk.CollectionConverters._
+import scala.concurrent.duration._
 
 final class Main extends Application {
   import com.wire.signals.Threading.defaultContext
@@ -43,6 +44,11 @@ final class Main extends Application {
       case KeyCode.RIGHT => world.onUserEvent ! UserEvent.MoveRight
       case _ =>
     })
+
+    CancellableFuture.delayed(5.seconds){
+      println("Let's play!")
+      gameState ! GameState.Play
+    }
   }
 
   private val gameState = Signal[GameState](GameState.Pause)

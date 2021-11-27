@@ -20,6 +20,8 @@ package object visualisation {
     case object MoveDown   extends UserEventType
     case object MoveLeft   extends UserEventType
     case object MoveRight  extends UserEventType
+
+    final case class Drag(from: Pos2D) extends UserEventType
   }
 
   final case class UserEvent(pos: Option[Pos2D], eventType: UserEventType)
