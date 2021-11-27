@@ -3,10 +3,10 @@ package io.makingthematrix.snake.visualisation.examples
 import io.makingthematrix.snake.Arguments
 import io.makingthematrix.snake.engine.fields.{Dir2D, Pos2D}
 import io.makingthematrix.snake.engine.{Automaton, GlobalUpdateStrategy, UpdateStrategy}
-import io.makingthematrix.snake.examples.Snake.{Body, Head, Tail, TurnRight, TurnLeft}
+import io.makingthematrix.snake.examples.Snake._
 import io.makingthematrix.snake.examples.{Snake, SnakeGlobal}
+import io.makingthematrix.snake.visualisation.UserEvent.{MoveDown, MoveLeft, MoveRight, MoveUp}
 import io.makingthematrix.snake.visualisation.{UserEvent, World}
-import io.makingthematrix.snake.visualisation.UserEvent.{MoveUp, MoveDown, MoveLeft, MoveRight}
 import javafx.scene.paint.Color
 
 final class SnakeWorld(override protected val args: Arguments) extends World[Snake, SnakeGlobal] {

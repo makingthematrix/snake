@@ -19,7 +19,7 @@
         <gluonfx.maven.plugin.version>1.0.7</gluonfx.maven.plugin.version>
         <charm.version>6.1.0</charm.version>
         <attach.version>4.0.13</attach.version>
-        <main.class>calculator.Main</main.class>
+        <main.class>io.makingthematrix.snake.Main</main.class>
         <scala.version>2.13.7</scala.version>
         <scala.compat.version>2.13</scala.compat.version>
         <munit.version>0.7.27</munit.version>

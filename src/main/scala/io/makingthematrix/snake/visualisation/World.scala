@@ -19,7 +19,7 @@ abstract class World[C <: Cell[C], GC <: GlobalCell[C, GC]] extends GameContract
   protected def toColor(c: C): Color
   protected def processUserEvent(event: UserEvent): Unit
 
-  protected val onUserEvent: SourceStream[UserEvent] = EventStream[UserEvent]()
+  override val onUserEvent: SourceStream[UserEvent] = EventStream[UserEvent]()
   onUserEvent.foreach { event =>
     processUserEvent(event)
     event.pos.map(auto.findCell).foreach { cell =>
@@ -35,7 +35,7 @@ abstract class World[C <: Cell[C], GC <: GlobalCell[C, GC]] extends GameContract
   private val drag = Signal(Option.empty[Pos2D])
   drag.onUpdated.collect { case (Some(prev), _) => UserEvent(prev, UserEventType.LeftClick) }.pipeTo(onUserEvent)
 
-  protected val canvas: Canvas = new Canvas().tap { canvas =>
+  override val canvas: Canvas = new Canvas().tap { canvas =>
     canvas.setWidth(args.windowSize.toDouble)
     canvas.setHeight(args.windowSize.toDouble)
   }
@@ -74,8 +74,6 @@ abstract class World[C <: Cell[C], GC <: GlobalCell[C, GC]] extends GameContract
   }
 
   override def init(): Unit = {
-    //FXGL.addUINode(canvas)
-
     canvas.setOnMouseDragged { (ev: MouseEvent) =>
       val p = Pos2D(ev.getSceneX.toInt / args.scale, ev.getSceneY.toInt / args.scale)
       drag ! Some(p)
@@ -102,6 +100,9 @@ abstract class WorldNoGlobal[C <: Cell[C]] extends World[C, Empty[C]] {
 }
 
 trait GameContract {
+  val canvas: Canvas
+  val onUserEvent: SourceStream[UserEvent]
+
   def next(): Boolean
   def init(): Unit
 }
