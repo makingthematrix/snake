@@ -2,8 +2,7 @@ package io.makingthematrix.snake
 
 import com.wire.signals.ui.UiDispatchQueue
 import com.wire.signals.{CancellableFuture, Signal}
-import io.makingthematrix.snake.visualisation.examples.SnakeWorld
-import io.makingthematrix.snake.visualisation.{GameContract, GameState, UserEvent}
+import io.makingthematrix.snake.game.{Arguments, GameContract, SnakeWorld, GameState, UserEvent}
 import javafx.application.{Application, Platform}
 import javafx.scene.Scene
 import javafx.scene.input.{KeyCode, KeyEvent}
@@ -30,18 +29,22 @@ final class Main extends Application {
     UiDispatchQueue.setUi(Platform.runLater)
     world.init()
 
-    stage.setOnCloseRequest((_: WindowEvent) => gameState ! GameState.End)
+    stage.setOnCloseRequest { (_: WindowEvent) =>
+      println(s"Game finished")
+      gameState ! GameState.End
+    }
+
     stage.addEventFilter(KeyEvent.KEY_RELEASED, (t: KeyEvent) => t.getCode match {
+      case KeyCode.UP    => world.onUserEvent ! UserEvent.MoveUp
+      case KeyCode.DOWN  => world.onUserEvent ! UserEvent.MoveDown
+      case KeyCode.LEFT  => world.onUserEvent ! UserEvent.MoveLeft
+      case KeyCode.RIGHT => world.onUserEvent ! UserEvent.MoveRight
       case KeyCode.SPACE =>
         gameState.mutate {
           case GameState.Pause => GameState.Play
-          case GameState.Play => GameState.Pause
+          case GameState.Play  => GameState.Pause
           case other => other
         }
-      case KeyCode.UP => world.onUserEvent ! UserEvent.MoveUp
-      case KeyCode.DOWN => world.onUserEvent ! UserEvent.MoveDown
-      case KeyCode.LEFT => world.onUserEvent ! UserEvent.MoveLeft
-      case KeyCode.RIGHT => world.onUserEvent ! UserEvent.MoveRight
       case _ =>
     })
 
@@ -50,11 +53,11 @@ final class Main extends Application {
       gameState ! GameState.Play
     }
   }
-
+  
   private val gameState = Signal[GameState](GameState.Pause)
   gameState.foreach {
     case GameState.Play => run()
-    case GameState.End => endGame()
+    case GameState.End  => endGame()
     case _ =>
   }
 
@@ -68,7 +71,8 @@ final class Main extends Application {
   }
 
   private def endGame(): Unit = {
-    Platform.runLater(() => Platform.exit())
+    Platform.exit()
+    System.exit(0)
   }
 }
 

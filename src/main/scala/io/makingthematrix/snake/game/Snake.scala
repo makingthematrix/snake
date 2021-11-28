@@ -1,4 +1,4 @@
-package io.makingthematrix.snake.examples
+package io.makingthematrix.snake.game
 
 import io.makingthematrix.snake.engine.{Automaton, Cell, GlobalCell}
 import io.makingthematrix.snake.engine.GlobalCell.NoSelfUpdate

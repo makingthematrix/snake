@@ -1,4 +1,4 @@
-package io.makingthematrix.snake
+package io.makingthematrix.snake.game
 
 final case class Arguments(dim:     Int = 40,        // the number of cells in one dimension of the automaton
                            step:    Int = 1,          // how often the visualisation should be refresh

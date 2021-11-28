@@ -1,11 +1,10 @@
-package io.makingthematrix.snake.visualisation
+package io.makingthematrix.snake.game
 
 import com.wire.signals.ui.UiDispatchQueue.Ui
 import com.wire.signals.{EventStream, Signal, SourceStream}
-import io.makingthematrix.snake.Arguments
 import io.makingthematrix.snake.engine.GlobalCell.Empty
+import io.makingthematrix.snake.engine._
 import io.makingthematrix.snake.engine.fields.Pos2D
-import io.makingthematrix.snake.engine.{Automaton, AutomatonNoGlobal, Board, Cell, GlobalCell}
 import javafx.scene.canvas.Canvas
 import javafx.scene.input.{MouseButton, MouseEvent}
 import javafx.scene.paint.Color

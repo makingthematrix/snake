@@ -1,12 +1,10 @@
-package io.makingthematrix.snake.visualisation.examples
+package io.makingthematrix.snake.game
 
-import io.makingthematrix.snake.Arguments
+import com.wire.signals.Signal
 import io.makingthematrix.snake.engine.fields.{Dir2D, Pos2D}
 import io.makingthematrix.snake.engine.{Automaton, GlobalUpdateStrategy, UpdateStrategy}
-import io.makingthematrix.snake.examples.Snake._
-import io.makingthematrix.snake.examples.{Snake, SnakeGlobal}
-import io.makingthematrix.snake.visualisation.UserEvent.{MoveDown, MoveLeft, MoveRight, MoveUp}
-import io.makingthematrix.snake.visualisation.{UserEvent, UserEventType, World}
+import io.makingthematrix.snake.game.Snake._
+import io.makingthematrix.snake.game.UserEvent.{MoveDown, MoveLeft, MoveRight, MoveUp}
 import javafx.scene.paint.Color
 
 import scala.util.chaining.scalaUtilChainingOps
@@ -27,21 +25,26 @@ final class SnakeWorld(override protected val args: Arguments) extends World[Sna
     case Snake.Tail(_)    => Color.BLACK
   }
 
-  override protected def processUserEvent(event: UserEvent): Unit =
-    (event match {
+  override protected def processUserEvent(event: UserEvent): Unit = {
+    moveDirection ! (event match {
       case MoveUp    => Some(Dir2D.Up)
       case MoveDown  => Some(Dir2D.Down)
       case MoveLeft  => Some(Dir2D.Left)
       case MoveRight => Some(Dir2D.Right)
       case UserEvent(Some(to), UserEventType.Drag(from)) => Some(from.dir(to).approx4)
       case _ => None
-    }).flatMap {
-      _.crossZ(auto.globalCell.headDir).pipe {
-        case cross if cross > 0 => Some(TurnLeft)
-        case cross if cross < 0 => Some(TurnRight)
-        case _ => None
+    })
+  }
+
+  private val moveDirection = Signal(Option.empty[Dir2D])
+  moveDirection.foreach {
+    case Some(dir) =>
+      dir.crossZ(auto.globalCell.headDir) match {
+        case cross if cross > 0 => auto.eventHub ! TurnLeft
+        case cross if cross < 0 => auto.eventHub ! TurnRight
       }
-    }.foreach(auto.eventHub ! _)
+    case _ =>
+  }
 
   override def init(): Unit = {
     super.init()
